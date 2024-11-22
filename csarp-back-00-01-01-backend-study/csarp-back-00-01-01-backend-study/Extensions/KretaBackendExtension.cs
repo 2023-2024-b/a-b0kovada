@@ -1,9 +1,13 @@
-﻿namespace csarp_back_00_01_01_backend_study.Extensions
+﻿using csarp_back_00_01_01_backend_study.Contexts;
+using Microsoft.EntityFrameworkCore;
+
+namespace csarp_back_00_01_01_backend_study.Extensions
 {
     public static class KretaBackendExtension
     {
         public static void AddBackend(this IServiceCollection services) {
             services.ConfigureCors();
+            services.ConfigureInMemoryContext();
         }
 
         private static void ConfigureCors(this IServiceCollection services) {
@@ -12,11 +16,23 @@
             {
                 options.AddPolicy("KretaApi", policy =>
                 {
-                    policy.WithOrigins("http://localhost:7090", "http://10.0.2.2:7090")
+                    policy.WithOrigins("https://0.0.0.0:7090")
                           .AllowAnyHeader()
                           .AllowAnyMethod();
                 });
             });
         }
+
+        public static void ConfigureInMemoryContext(this IServiceCollection services)
+        {
+            string dbNameInMemoryContext = "Kreta" + Guid.NewGuid();
+            services.AddDbContext<KretaInMemoryContext>
+            (
+                 options => options.UseInMemoryDatabase(databaseName: dbNameInMemoryContext),
+                 ServiceLifetime.Scoped,
+                 ServiceLifetime.Scoped
+            );
+        }
     }
 }
+

@@ -30,4 +30,6 @@ app.MapControllers();
 
 app.UseCors("KretaCors");
 
+app.ConfigureWebApp();
+
 app.Run();
