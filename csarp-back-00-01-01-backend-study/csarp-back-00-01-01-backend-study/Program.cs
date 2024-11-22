@@ -1,3 +1,5 @@
+using csarp_back_00_01_01_backend_study.Extensions;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -7,6 +9,9 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.ConfigureWebHost();
+builder.Services.AddBackend();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -15,23 +20,14 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-builder.WebHost.UseUrls("http://0.0.0.0:7090");
 
-
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy("KretaApi", policy =>
-    {
-        policy.WithOrigins("http://localhost:7090", "http://10.0.2.2:7090")
-              .AllowAnyHeader()
-              .AllowAnyMethod();
-    });
-});
 
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.UseCors("KretaCors");
 
 app.Run();
