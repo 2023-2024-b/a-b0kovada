@@ -1,0 +1,6 @@
+@csarp_back_00_01_01_backend_study_HostAddress = http://localhost:5207
+
+GET {{csarp_back_00_01_01_backend_study_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
